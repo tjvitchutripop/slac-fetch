@@ -233,6 +233,9 @@ class LatentModel(torch.jit.ScriptModule):
     @torch.jit.script_method
     def calculate_loss(self, state_, action_, reward_, done_):
         # Calculate the sequence of features.
+        state_=state_.unsqueeze(0)
+        state_=state_.unsqueeze(0)
+        print(state_.size())
         feature_ = self.encoder(state_)
 
         # Sample from latent variable model.

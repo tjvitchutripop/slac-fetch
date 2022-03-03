@@ -3,25 +3,15 @@ import os
 from datetime import datetime
 
 import torch
+import gym
 
 from slac.algo import SlacAlgorithm
-from slac.env import make_dmc
 from slac.trainer import Trainer
 
 
 def main(args):
-    env = make_dmc(
-        domain_name=args.domain_name,
-        task_name=args.task_name,
-        action_repeat=args.action_repeat,
-        image_size=64,
-    )
-    env_test = make_dmc(
-        domain_name=args.domain_name,
-        task_name=args.task_name,
-        action_repeat=args.action_repeat,
-        image_size=64,
-    )
+    env = gym.make('FetchPickAndPlace-v1')
+    env_test = gym.make('FetchPickAndPlace-v1')
 
     log_dir = os.path.join(
         "logs",
@@ -30,7 +20,7 @@ def main(args):
     )
 
     algo = SlacAlgorithm(
-        state_shape=env.observation_space.shape,
+        state_shape=env.observation_space['observation'].shape,
         action_shape=env.action_space.shape,
         action_repeat=args.action_repeat,
         device=torch.device("cuda" if args.cuda else "cpu"),
