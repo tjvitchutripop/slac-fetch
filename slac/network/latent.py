@@ -119,6 +119,7 @@ class Encoder(torch.jit.ScriptModule):
     def forward(self, x):
         B, S, C, H, W = x.size()
         x = x.view(B * S, C, H, W)
+        print(x.size())
         x = self.net(x)
         x = x.view(B, S, -1)
         return x
@@ -233,10 +234,8 @@ class LatentModel(torch.jit.ScriptModule):
     @torch.jit.script_method
     def calculate_loss(self, state_, action_, reward_, done_):
         # Calculate the sequence of features.
-        state_=state_.unsqueeze(0)
-        state_=state_.unsqueeze(0)
-        print(state_.size())
-        feature_ = self.encoder(state_)
+        formatted_state = state_.reshape(32, 1, 25, 3, 3)
+        feature_ = self.encoder(formatted_state)
 
         # Sample from latent variable model.
         z1_mean_post_, z1_std_post_, z1_, z2_ = self.sample_posterior(feature_, action_)
