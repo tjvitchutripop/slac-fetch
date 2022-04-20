@@ -12,7 +12,7 @@ from slac.trainer import Trainer
 def main(args):
     env = gym.make('FetchPickAndPlace-v1')
     env_test = gym.make('FetchPickAndPlace-v1')
-
+    counter = 0    
     log_dir = os.path.join(
         "logs",
         f"{args.domain_name}-{args.task_name}",

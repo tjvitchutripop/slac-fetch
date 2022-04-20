@@ -99,27 +99,27 @@ class Encoder(torch.jit.ScriptModule):
 
         self.net = nn.Sequential(
             # (3, 64, 64) -> (32, 32, 32)
-            nn.Conv2d(input_dim, 32, 5, 2, 2),
+            nn.Conv1d(input_dim, 32, 5, 2, 2),
             nn.LeakyReLU(0.2, inplace=True),
             # (32, 32, 32) -> (64, 16, 16)
-            nn.Conv2d(32, 64, 3, 2, 1),
+            nn.Conv1d(32, 64, 3, 2, 1),
             nn.LeakyReLU(0.2, inplace=True),
             # (64, 16, 16) -> (128, 8, 8)
-            nn.Conv2d(64, 128, 3, 2, 1),
+            nn.Conv1d(64, 128, 3, 2, 1),
             nn.LeakyReLU(0.2, inplace=True),
             # (128, 8, 8) -> (256, 4, 4)
-            nn.Conv2d(128, 256, 3, 2, 1),
+            nn.Conv1d(128, 256, 3, 2, 1),
             nn.LeakyReLU(0.2, inplace=True),
             # (256, 4, 4) -> (256, 1, 1)
-            nn.Conv2d(256, output_dim, 4),
+            nn.Conv1d(256, output_dim, 4),
             nn.LeakyReLU(0.2, inplace=True),
         ).apply(initialize_weight)
 
     @torch.jit.script_method
     def forward(self, x):
+                
         B, S, C, H, W = x.size()
         x = x.view(B * S, C, H, W)
-        print(x.size())
         x = self.net(x)
         x = x.view(B, S, -1)
         return x
@@ -234,6 +234,7 @@ class LatentModel(torch.jit.ScriptModule):
     @torch.jit.script_method
     def calculate_loss(self, state_, action_, reward_, done_):
         # Calculate the sequence of features.
+        print ("initial sstate shape ", state_.shape)
         formatted_state = state_.reshape(32, 1, 25, 3, 3)
         feature_ = self.encoder(formatted_state)
 

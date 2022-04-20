@@ -102,8 +102,7 @@ class SlacAlgorithm:
         return action.cpu().numpy()[0]
 
     def step(self, env, ob, t, is_random):
-        t += 1
-
+        t += 1        
         if is_random:
             action = env.action_space.sample()
         else:
@@ -125,6 +124,7 @@ class SlacAlgorithm:
     def update_latent(self, writer):
         self.learning_steps_latent += 1
         state_, action_, reward_, done_ = self.buffer.sample_latent(self.batch_size_latent)
+        print ("state_.shape ", state_.shape)
         loss_kld, loss_image, loss_reward = self.latent.calculate_loss(state_, action_, reward_, done_)
 
         self.optim_latent.zero_grad()

@@ -99,6 +99,7 @@ class Trainer:
         t = 0
         # Initialize the environment.
         state = self.env.reset()
+        print ("initial state of the robot ", state['observation'].shape)
         self.ob.reset_episode(state)
         self.algo.buffer.reset_episode(state)
 

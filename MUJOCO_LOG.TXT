@@ -1,0 +1,15 @@
+Tue Mar  8 10:14:58 2022
+ERROR: Expired activation key
+
+Tue Mar  8 10:19:20 2022
+ERROR: Expired activation key
+
+Tue Mar  8 10:19:51 2022
+ERROR: Expired activation key
+
+Tue Mar  8 10:22:27 2022
+ERROR: Expired activation key
+
+Tue Mar  8 10:34:37 2022
+ERROR: GLEW initalization error: Missing GL version
+
